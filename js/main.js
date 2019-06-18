@@ -31,3 +31,46 @@ function getMovies(searchText){
             console.log(error);
         })
 }
+
+function movieSelected(id){
+    sessionStorage.setItem("movieID",id);
+    window.location = "movie.html";
+}
+
+function getMovie(){
+    var movieID = sessionStorage.getItem("movieID");
+    axios
+        .get("http://www.omdbapi.com/?i=" + movieID + "&apikey=2370c7ed")
+        .then((response) => {
+            console.log(response);
+            var movie = response.data;
+            var output = `
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="${movie.Poster}" class="thumbnail">
+                </div>
+                <div class="col-md-8">
+                    <h2>${movie.Title}</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Genre:</strong>${movie.Genre}</li>
+                        <li class="list-group-item"><strong>Actors:</strong>${movie.Actors}</li>
+                        <li class="list-group-item"><strong>Released:</strong>${movie.Released}</li>
+                        <li class="list-group-item"><strong>IMDb rating:</strong>${movie.imdbRating}</li>
+                        <li class="list-group-item"><strong>Genre:</strong>${movie.Genre}</li>
+                    </ul>
+                </div>
+            </div> <br>
+            <div class="row">
+                <div class="well">
+                    <h4>Plot</plot></h4>
+                    ${movie.Plot} <br> <br> <br>
+                    <a href="index.html" class="btn btn-primary">Go Back To Search</a>
+                </div>
+            </div>
+            `;
+            $("#movie").html(output);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
